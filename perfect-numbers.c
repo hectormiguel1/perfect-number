@@ -37,34 +37,44 @@
 #include <stdlib.h>
 
 #define START 1
-#define END 100
-#define GUESS_MULTIPLIER_ONE 0.5
-#define GUESS_MULTIPLIER_TWO 0.05
+#define END 100000
+#define FACTOR_ARRAY_SIZE 320
+#define START_GUESS_STRING "\nInitial \"guess\" = %f"
+#define EXPECTED_SQRT_STRING "\nExpected square root of %d = "
+#define COMPUTED_SQRT_STRING "\nComputed square root of %d = "
+#define REACHED_STRING "\n\treached in %d iterations"
+#define THRESHOLD_STRING "\n\tusing threshold "
+#define ACCURACY_STRING "\n\tfor %d decimal-place accuracy \n"
+#define DECIMAL_FORMAT_SUBSECTION_ONE "%."
+#define DECIMAL_FORMAT_SUBSECTION_TWO "lf"
+
 
 
 int iterations = EMPTY_INITIALIZER;
-char factorsString[END + 1] = { EMPTY_INITIALIZER };
+int factors[FACTOR_ARRAY_SIZE] = { EMPTY_INITIALIZER };
 double allowedThreshold = EMPTY_INITIALIZER;
 int precision = EMPTY_INITIALIZER;
 double computedSQRT = EMPTY_INITIALIZER;
+char decimalFormat[7];
 
 int isPerfect(int number);
 void doSQRTComputation(int number);
 void printToScreen(int number);
 void reset();
-char* itoa(int,int);
 
 int mainLoop(int desiredAccuracy, double threshold)
 {
+
     precision = desiredAccuracy;
     allowedThreshold = threshold;
+    sprintf(decimalFormat,"%s%d%s",DECIMAL_FORMAT_SUBSECTION_ONE,precision,DECIMAL_FORMAT_SUBSECTION_TWO);
 
     for(int number = START; number <= END; number++)
     {
         if(isPerfect(number))
         {
-           // doSQRTComputation(number);
-           // printToScreen(number);
+           doSQRTComputation(number);
+           printToScreen(number);
           reset();
         }
         else
@@ -86,54 +96,108 @@ int mainLoop(int desiredAccuracy, double threshold)
  */
 #define PERFECT 1
 #define NOT_PERFECT 0
-#define DIVISOR_START 2
+#define DIVISOR_START 1
 #define ALWAYS_DIVISOR 1
 #define SPRINTF_FORMAT_STRING " + %d"
+int isPerfect(int number) {
+    int factorSum = EMPTY_INITIALIZER;
+    int lastFactorIndex = EMPTY_INITIALIZER;
 
-int isPerfect(int number)
-{
-    int factorSum = ALWAYS_DIVISOR; //TODO EXPLAIN WHY 2
-
-    strcat(factorsString,itoa(ALWAYS_DIVISOR, 10));
-
-
-    for (int divisor = DIVISOR_START; divisor < number; divisor++)
-    {
-        if(number % divisor == 0)
-        {
-            strcat(factorsString," + ");
-            strcat(factorsString,itoa(divisor,10));
+    for (int divisor = DIVISOR_START; divisor < number; divisor++) {
+        if (number % divisor == 0) {
+            factors[lastFactorIndex] = divisor;
+            lastFactorIndex++;
             factorSum += divisor;
         }
     }
-    printf(factorsString);
-    if(factorSum == number)
-    {
+    if (factorSum == number) {
         return PERFECT;
-    }
-    else
-    {
+    } else {
         return NOT_PERFECT;
     }
 }
-char* itoa(int val, int base){
 
-    static char buf[32] = {0};
+/**
+ * FUNCTION NAME: doSQRTComputation
+ * This function uses the babylonian method to compute the square root of the passed number
+ * to a previously specified threshold.
+ * Babylonian Method is as fallows:
+ * better estimation = (initial guess + number/initial guess) /2
+ * As a result of the formula, the magic number 2 will be used in this function.
+ * @param number: number to compute the square root of.
+ * @return NONE: void function.
+ */
+#define GUESS_MULTIPLIER 0.15
+void doSQRTComputation(int number)
+{
+    double previousSQRT = number * GUESS_MULTIPLIER;
+    double currentSQRT = previousSQRT;
+    double difference = EMPTY_INITIALIZER;
 
-    int i = 30;
+    do{
+        iterations++;
+        previousSQRT = currentSQRT;
+        currentSQRT = (previousSQRT + (number/ previousSQRT)) / 2;
+        difference = currentSQRT - previousSQRT;
 
-    for(; val && i ; --i, val /= base)
+        if (difference < EMPTY_INITIALIZER)
+        {
+            difference *= -1; //Flips the sign
+        }
 
-        buf[i] = "0123456789abcdef"[val % base];
 
-    return &buf[i+1];
+    }while(difference > precision);
 
+    computedSQRT = currentSQRT;
 }
 
+/**
+ * FUNCTION NAME: printToScreen
+ * This functions does the final printing to the screen.
+ * Due to the fact that 1 as always a divisor to every number, it is always printed outside the loop,
+ * therefor the loop can iterate from the next factor, for this reason the for loop starts at 1 instead of
+ * 0.
+ * @param number: perfect number to be printed
+ * @return : Nothing is return, void function.
+ */
+void printToScreen(int number)
+{
+    printf("Perfect Number %d = 1", number);
+    for (int index = 1; index < FACTOR_ARRAY_SIZE; index++) //1 is explained in header file, please read.
+    {
+        if(factors[index])
+        {
+            printf(" + %d",factors[index]);
+        }
+    }
+    printf(";");
+
+    printf(START_GUESS_STRING,(number * GUESS_MULTIPLIER));
+    printf(EXPECTED_SQRT_STRING,number);
+    printf(decimalFormat,sqrt(number));
+    printf(COMPUTED_SQRT_STRING,number);
+    printf(decimalFormat,computedSQRT);
+    printf(REACHED_STRING,iterations);
+    printf(THRESHOLD_STRING);
+    printf(decimalFormat,precision);
+    printf(ACCURACY_STRING,precision);
+}
+/**
+ * FUNCTION NAME: reset
+ * This function resets all the values used when testing if the number is perfect.
+ * in order to rest the array we are using memset which is part of the string.h file
+ * while not discussed in the book it is referenced in the appendix.
+ * @param: NONE
+ * @return: function return type is void
+ */
 void reset()
 {
     iterations = EMPTY_INITIALIZER;
     computedSQRT = EMPTY_INITIALIZER;
-    memset(factorsString,0, sizeof(factorsString) - 1);
+    for(int index = EMPTY_INITIALIZER; index < FACTOR_ARRAY_SIZE; index++)
+    {
+        factors[index] = EMPTY_INITIALIZER;
+    }
+
 }
 
