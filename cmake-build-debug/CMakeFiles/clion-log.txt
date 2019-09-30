@@ -1,1 +1,4 @@
-CMakeLists.txt not found in /home/hectorr/CLionProjects/perfect-number Select CMakeLists.txt file...
+/home/hectorr/clion-2019.2.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/hectorr/CLionProjects/perfect-number
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hectorr/CLionProjects/perfect-number/cmake-build-debug

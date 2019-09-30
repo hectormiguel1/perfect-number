@@ -38,48 +38,34 @@
 
 #define START 1
 #define END 100000
-#define FACTOR_ARRAY_SIZE 320
-#define START_GUESS_STRING "\nInitial \"guess\" = %f"
-#define EXPECTED_SQRT_STRING "\nExpected square root of %d = "
-#define COMPUTED_SQRT_STRING "\nComputed square root of %d = "
-#define REACHED_STRING "\n\treached in %d iterations"
-#define THRESHOLD_STRING "\n\tusing threshold "
-#define ACCURACY_STRING "\n\tfor %d decimal-place accuracy \n"
-#define DECIMAL_FORMAT_SUBSECTION_ONE "%."
-#define DECIMAL_FORMAT_SUBSECTION_TWO "lf"
-
-
+#define FACTOR_ARRAY_SIZE 15
 
 int iterations = EMPTY_INITIALIZER;
 int factors[FACTOR_ARRAY_SIZE] = { EMPTY_INITIALIZER };
 double allowedThreshold = EMPTY_INITIALIZER;
 int precision = EMPTY_INITIALIZER;
 double computedSQRT = EMPTY_INITIALIZER;
-char decimalFormat[7];
+char decimalFormat[30];
 
 int isPerfect(int number);
 void doSQRTComputation(int number);
 void printToScreen(int number);
 void reset();
 
-int mainLoop(int desiredAccuracy, double threshold)
-{
+int mainLoop(int desiredAccuracy, double threshold) {
 
     precision = desiredAccuracy;
     allowedThreshold = threshold;
-    sprintf(decimalFormat,"%s%d%s",DECIMAL_FORMAT_SUBSECTION_ONE,precision,DECIMAL_FORMAT_SUBSECTION_TWO);
 
-    for(int number = START; number <= END; number++)
-    {
-        if(isPerfect(number))
-        {
-           doSQRTComputation(number);
-           printToScreen(number);
-          reset();
-        }
-        else
-        {
-          reset();
+    sprintf(decimalFormat, "%s%d%s", "%.",desiredAccuracy, "f");
+
+    for (int number = START; number <= END; number++) {
+        if (isPerfect(number)) {
+            doSQRTComputation(number);
+            printToScreen(number);
+            reset();
+        } else {
+            reset();
         }
     }
 
@@ -97,8 +83,6 @@ int mainLoop(int desiredAccuracy, double threshold)
 #define PERFECT 1
 #define NOT_PERFECT 0
 #define DIVISOR_START 1
-#define ALWAYS_DIVISOR 1
-#define SPRINTF_FORMAT_STRING " + %d"
 int isPerfect(int number) {
     int factorSum = EMPTY_INITIALIZER;
     int lastFactorIndex = EMPTY_INITIALIZER;
@@ -140,13 +124,13 @@ void doSQRTComputation(int number)
         currentSQRT = (previousSQRT + (number/ previousSQRT)) / 2;
         difference = currentSQRT - previousSQRT;
 
-        if (difference < EMPTY_INITIALIZER)
+        if (difference < 0)
         {
             difference *= -1; //Flips the sign
         }
 
 
-    }while(difference > precision);
+    }while(difference > allowedThreshold);
 
     computedSQRT = currentSQRT;
 }
@@ -162,6 +146,7 @@ void doSQRTComputation(int number)
  */
 void printToScreen(int number)
 {
+    double expectedSQRT = sqrt(number);
     printf("Perfect Number %d = 1", number);
     for (int index = 1; index < FACTOR_ARRAY_SIZE; index++) //1 is explained in header file, please read.
     {
@@ -170,17 +155,19 @@ void printToScreen(int number)
             printf(" + %d",factors[index]);
         }
     }
-    printf(";");
-
-    printf(START_GUESS_STRING,(number * GUESS_MULTIPLIER));
-    printf(EXPECTED_SQRT_STRING,number);
-    printf(decimalFormat,sqrt(number));
-    printf(COMPUTED_SQRT_STRING,number);
+    printf("; \n");
+    printf("Initial \"guess\" = %f \n",(number * GUESS_MULTIPLIER));
+    printf("Expected square root of %d = ", number);
+    printf(decimalFormat,expectedSQRT);
+    printf("\nComputed square root of %d = ",number);
     printf(decimalFormat,computedSQRT);
-    printf(REACHED_STRING,iterations);
-    printf(THRESHOLD_STRING);
-    printf(decimalFormat,precision);
-    printf(ACCURACY_STRING,precision);
+    printf("\n\treached in %d iterations", iterations);
+    printf("\n\tusing threshold of ");
+    printf(decimalFormat,allowedThreshold);
+    printf("\n\tfor %d decimal-place accuracy",precision);
+    printf("\n");
+
+
 }
 /**
  * FUNCTION NAME: reset
