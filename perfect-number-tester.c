@@ -17,26 +17,33 @@
 |  Compile/Run:  [The fallowing instructions is to compile in the ocelot server at FIU.
 |                   -std=c99: used to direct the compiler to use the newer c99 standard and libraries.
 |                   -lm: used to tell the compiler to link the math library.
-|                   -O3: this activates the highest level optimizations by the gcc compiler. This will activate
-|                         several compiler directives. full list can be found at:
-|                         https://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcc/Optimize-Options.html#Optimize-Options.
-|                         -O3 activates all directives from -O and -O2, these are listed on the top linked site.]
-| 	gcc -std=c99 -lm -O3 *.c -o perfect-numbers
+|                 ]
+| 	gcc -std=c99 -lm *.c -o perfect-numbers perfect-number-tester.c perfect-numbers.c
 |   ./perfect-numbers
 |  +-----------------------------------------------------------------------------
 |
-|  Description:  [//Todo]
+|  Description:  [Determines which of a sequence of integers is a “perfect number” and then compute the square root (√)
+|                   of each such perfect number.]
 |
-|        Input:  [//Todo]
+|        Input:  [Program will prompt the user to provide the desired decimal-place accuracy, in the range of [1-15],
+|                 inclusive.]
 |
-|       Output:  [//Todo]
+|       Output:  [Output will include all of the perfect numbers between [1-100000], along with an ordered list of their
+|                   factors to confirm the factors sum to the perfect number. For each perfect number, the output will
+|                   also include the initial square root guess, the expected value using sqrt() (or a similar function),
+|                   computed value for the square root of that number, the required decimal-place accuracy,
+|                   the required threshold, and the number of terms (iterations) it took to reach the required
+|                   decimal-place accuracy. ]
 |
-|     Process:  [//Todo]
+|     Process:  [The program will start by prompting the user to enter a number between 1 and 15 for the desired decimal
+|                   place accuracy. the input is validated for both accurate input and rage. The now validated user input
+|                   is used to compute the desired threshold allowed (max delta) when computing the square root of the
+|                   perfect number, this values are passed to the mainLoop function in perfect-numbers.c. ]
 |
 |   Required Features Not Included:
-|                [//Todo]
+|                [None, all requested features are present.]
 |
-|   Known Bugs:  [//Todo]
+|   Known Bugs:  [No known bugs.]
 |  *===========================================================================*/
 #include "perfect-numbers.h"
 #include <ctype.h>
