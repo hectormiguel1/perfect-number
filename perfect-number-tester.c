@@ -46,8 +46,7 @@
 |   Known Bugs:  [No known bugs.]
 |  *===========================================================================*/
 #include "perfect-numbers.h"
-#include <ctype.h>
-
+#include <ctype.h> //Used for the isspace() function.
 
 /**
  * As per the specifications, this are the boundaries to consider when reading input for the user. This will be the
