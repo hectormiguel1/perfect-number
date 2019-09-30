@@ -38,14 +38,14 @@
 
 #define START 1
 #define END 100000
-#define FACTOR_ARRAY_SIZE 15
+#define FACTOR_ARRAY_SIZE 320
 
 int iterations = EMPTY_INITIALIZER;
 int factors[FACTOR_ARRAY_SIZE] = { EMPTY_INITIALIZER };
 double allowedThreshold = EMPTY_INITIALIZER;
 int precision = EMPTY_INITIALIZER;
 double computedSQRT = EMPTY_INITIALIZER;
-char decimalFormat[30];
+char decimalFormat[10];
 
 int isPerfect(int number);
 void doSQRTComputation(int number);

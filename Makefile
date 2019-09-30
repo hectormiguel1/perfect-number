@@ -1,6 +1,6 @@
 CC = gcc
 OPTIMIZATION-OPTION = -O3
-BASIC-OPTIONS = -std=c99 -lm -O3 -o
+BASIC-OPTIONS = -std=c99 -lm -o
 DEPENDS = perfect-number-tester.c perfect-numbers.c perfect-numbers.h
 FILES = perfect-number-tester.c perfect-numbers.c
 OUT_EXEC = perfect-number
