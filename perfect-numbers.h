@@ -1,7 +1,7 @@
 /*=============================================================================
 |   Source code:  [perfect-number-tester]
 |        Author:  [Hector Ramirez]
-|    Student ID:  [Your Student ID]
+|    Student ID:  [5708475]
 |    Assignment:  Program #[2] [Perfect Numbers]
 |
 |            Course:  [COP 4338]

@@ -1,7 +1,7 @@
 /*=============================================================================
 |   Source code:  [perfect-number-tester]
 |        Author:  [Hector Ramirez]
-|    Student ID:  [Your Student ID]
+|    Student ID:  [5708475]
 |    Assignment:  Program #[2] [Perfect Numbers]
 |
 |            Course:  [COP 4338]
@@ -179,7 +179,7 @@ int isPerfect(int number) {
  * @param number: number to compute the square root of.
  * @return NONE: void function.
  */
-#define GUESS_MULTIPLIER 0.2 //explained in function header.
+#define GUESS_MULTIPLIER 0.075 //explained in function header.
 void doSQRTComputation(int number)
 {
     double previousSQRT = number * GUESS_MULTIPLIER;
@@ -224,7 +224,7 @@ void printToScreen(int number)
         }
     }
     printf("; \n");
-    printf("Initial \"guess\" = %f \n",(number * GUESS_MULTIPLIER));
+    printf("Initial \"guess\" = %.2f \n",(number * GUESS_MULTIPLIER));
     printf("Expected square root of %d = ", number);
     printf(decimalFormat,expectedSQRT);
     printf("\nComputed square root of %d = ",number);

@@ -1,7 +1,7 @@
 /*=============================================================================
 |   Source code:  [perfect-number-tester]
 |        Author:  [Hector Ramirez]
-|    Student ID:  [Your Student ID]
+|    Student ID:  [5708475]
 |    Assignment:  Program #[2] [Perfect Numbers]
 |
 |            Course:  [COP 4338]
@@ -80,7 +80,7 @@ int main(void)
  * @param: None
  * @return: None
  */
-#define PROMPT_MESSAGE "Enter whole number between %d and %d for the accuracy of the square root of perfect number: "
+#define PROMPT_MESSAGE "Enter number for the accuracy of the square root of the perfect number [%d-%d]: "
 void promptUser(void)
 {
     printf(PROMPT_MESSAGE,MIN_PRECISION,MAX_PRECISION);
